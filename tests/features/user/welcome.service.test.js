@@ -1,15 +1,15 @@
 
-// const Welcome = require('../../../src/features/user/welcome.service');
+const Welcome = require('../../../src/features/user/welcome.service');
 
-// describe('Welcome', () => {
-//     test('greetings should return "Hello World"', () => {
-//       // Arrange
-//       const welcome = new Welcome();
+describe('Welcome', () => {
+    test('greetings should return "Hello World"', () => {
+      // Arrange
+      const welcome = new Welcome();
   
-//       // Act
-//       const result = welcome.greetings();
+      // Act
+      const result = welcome.greetings();
   
-//       // Assert
-//       expect(result).toBe('Hello World');
-//     });
-//   });
+      // Assert
+      expect(result).toBe('Hello World');
+    });
+  });
