@@ -37,3 +37,6 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: coverage  # Directory to publish
+          commit_message: 'Deploy coverage report'  # Commit message for deployment
+          
+
