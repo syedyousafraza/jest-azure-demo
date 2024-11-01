@@ -13,7 +13,7 @@ pr:
     include:
       - master  # Trigger the pipeline when a pull request is opened to the master branch.
 
-# Specifies the agent pool for the build environment .
+# Specifies the agent pool for the build environment
 pool:
   name: 'local-windows'  # Use your local Windows agent pool
   demands:
