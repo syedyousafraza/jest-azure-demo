@@ -1,39 +1,35 @@
-name: Run Tests and Deploy
+name: Test and Deploy Reports
 
 on:
   push:
     branches:
-      - master
-      - develop
+      - main
 
 jobs:
-  test:
+  test-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '16'
+    # Example: Install dependencies
+    - name: Install dependencies
+      run: npm install
 
-      - name: Install Dependencies
-        run: npm install
+    # Example: Run tests and generate reports
+    - name: Run tests
+      run: npm test
 
-      - name: Run Tests
-        run: npm test -- --coverage
+    # Gather all the files you want to publish
+    - name: Prepare test report for gh-pages
+      run: mv ./path/to/test/report/* ./public/
 
-      - name: Upload Coverage Report
-        uses: actions/upload-artifact@v2
-        with:
-          name: coverage-report
-          path: coverage/**
-
-      - name: Deploy to GitHub Pages
-        if: success()  # Only deploy if previous steps succeeded
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: coverage  # Directory to publish
+    # Deploy to GitHub Pages
+    - name: Deploy test report to gh-pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./public/
+        publish_branch: gh-pages
+        force_orphan: true
