@@ -28,7 +28,7 @@ jobs:
       - name: List Coverage Directory
         run: ls -R coverage  # Check if coverage is generated
 
-      - name: Deploy to GitHub Pages
+      - name: Deploy to GitHub Pages for coverage
         if: success()
         uses: peaceiris/actions-gh-pages@v3
         with:
@@ -36,4 +36,4 @@ jobs:
           publish_dir: coverage
           user_name: 'Yousaf Raza' 
           user_email: 'your-email@example.com'  # Replace with your email
-          commit_message: 'Deploy coverage report'
+          commit_message: 'Deploy coverage report' 
