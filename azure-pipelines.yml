@@ -4,58 +4,50 @@ trigger:
       - master
       - develop
 
-resources:
-  repositories:
-    - repository: templates  # Name for the repository reference
-      type: git
-      name: organization/repo  # Adjust this to your actual organization and repo name
-      ref: refs/heads/main  # Reference to the main branch
-      endpoint: azureDevOps  # Your service connection name
+pool:
+  vmImage: 'ubuntu-latest'
 
-jobs:  # Use 'jobs' keyword to define multiple jobs in the pipeline
+steps:
+- task: Cache@2
+  inputs:
+    key: 'npm | "$(Agent.OS)" | package-lock.json'
+    path: node_modules
+    cacheHitVar: NODE_MODULES_CACHE_HIT
 
-- job: CacheNodeModules
-  pool:
-    vmImage: 'ubuntu-latest'
-  steps:
-    - task: Cache@2
-      inputs:
-        key: 'npm | "$(Agent.OS)" | package-lock.json'  # Cache key based on OS and package-lock
-        path: node_modules  # Path to cache
-        cacheHitVar: NODE_MODULES_CACHE_HIT  # Variable to check cache hit
+- task: NodeTool@0
+  inputs:
+    versionSpec: '16.x'
 
-- job: BuildAndTest
-  dependsOn: CacheNodeModules  # Depend on CacheNodeModules job
-  condition: succeeded('CacheNodeModules')  # Only run if CacheNodeModules succeeded
-  pool:
-    vmImage: 'ubuntu-latest'
-  steps:
-    - task: NodeTool@0
-      inputs:
-        versionSpec: '16.x'  # Specify Node.js version
-    - script: npm ci
-      displayName: 'Install Dependencies'
-      condition: eq(variables.NODE_MODULES_CACHE_HIT, 'false')  # Only run if cache miss
-    - script: npm run test -- --coverage
-      displayName: 'Run Jest Tests with Coverage Report'
-    - task: PublishTestResults@2
-      inputs:
-        testResultsFiles: '**/jest-test-results.xml'  # Path to Jest test results
-        testRunTitle: 'Jest Unit Tests'
-        testRunSystem: 'Jest'
-    - task: PublishCodeCoverageResults@1
-      inputs:
-        codeCoverageTool: 'Cobertura'  # Code coverage tool
-        summaryFileLocation: '$(System.DefaultWorkingDirectory)/coverage/cobertura-coverage.xml'
-        reportDirectory: '$(System.DefaultWorkingDirectory)/coverage'
-        failIfCoverageEmpty: true  # Fail if coverage report is empty
-    - task: CopyFiles@2
-      inputs:
-        SourceFolder: '$(System.DefaultWorkingDirectory)/coverage'
-        Contents: '**/*'
-        TargetFolder: '$(Build.ArtifactStagingDirectory)/coverage'  # Staging directory for artifacts
-    - task: PublishBuildArtifacts@1
-      inputs:
-        pathToPublish: '$(Build.ArtifactStagingDirectory)/coverage'  # Path to published artifacts
-        artifactName: 'CoverageReport'  # Name for the artifact
-        publishLocation: 'Container'  # Store artifact in Azure DevOps
+- script: |
+    if [ "$(NODE_MODULES_CACHE_HIT)" != "true" ]; then
+      npm ci
+    fi
+  displayName: 'Install Dependencies'
+  condition: ne(variables.NODE_MODULES_CACHE_HIT, 'true')
+
+- script: npm run test -- --coverage
+  displayName: 'Run Jest Tests with Coverage Report'
+
+- task: PublishTestResults@2
+  inputs:
+    testResultsFiles: '**/jest-test-results.xml'
+    testRunTitle: 'Jest Unit Tests'
+    searchFolder: $(System.DefaultWorkingDirectory)
+
+- task: PublishCodeCoverageResults@1
+  inputs:
+    codeCoverageTool: 'Cobertura'
+    summaryFileLocation: '$(System.DefaultWorkingDirectory)/coverage/cobertura-coverage.xml'
+    reportDirectory: '$(System.DefaultWorkingDirectory)/coverage'
+    failIfCoverageEmpty: true
+
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: '$(System.DefaultWorkingDirectory)/coverage'
+    Contents: '**/*'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)/coverage'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    artifactName: 'drop'
