@@ -61,7 +61,7 @@ describe('UserService', () => {
       ['', 'Doe', 'Doe'],                       // Missing first name
       ['  Alice  ', 'Smith', 'Alice Smith'],   // Leading spaces on first name
       ['Bob', '  ', 'Bob'],                     // spaces on last name
-      ['   ', '   ', ''],                       // Both names are empty ok
+      ['   ', '   ', ''],                       // Both names are empty here
     ];
 
     test.each(testCases)('should format "%s %s" to "%s"', (firstName, lastName, expected) => {
