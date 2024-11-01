@@ -2,7 +2,7 @@
 trigger:
   branches:
     include:
-      - develop  # Trigger on pushes to the develop branch.
+      - develop  # Trigger on pushes to the develop branch. 
   paths:
     include:
       - '**/*'  # Monitor all paths in the repository for changes.
