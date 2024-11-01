@@ -15,7 +15,7 @@ pr:
 
 # Specifies the virtual machine for the build environment.
 pool:
-  name: 'azure-local-agent'  # Replace with your actual agent pool name.
+  name: 'my-personal-computer'  # Replace with your actual agent pool name.
 
 # Steps to be executed in the pipeline.
 steps:
