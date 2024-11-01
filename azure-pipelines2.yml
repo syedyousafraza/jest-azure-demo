@@ -1,0 +1,62 @@
+# This section defines the trigger for the pipeline.
+trigger:
+  branches:
+    include:
+      - master  # Trigger on pushes to the master branch.
+  paths:
+    include:
+      - '**/*'  # Monitor all paths in the repository for changes.
+
+# This section defines the pull request trigger.
+pr:
+  branches:
+    include:
+      - master  # Trigger the pipeline when a pull request is opened to the master branch.
+
+# Specifies the virtual machine for the build environment.
+pool:
+  name: 'my-personal-computer'  # Replace with your actual agent pool name.
+
+# Steps to be executed in the pipeline.
+steps:
+  # Installs the specified Node.js version (16.x here) to match your project requirements.
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '16.x'  # Specify the Node.js version.
+
+  # Runs `npm install` to install project dependencies from package.json.
+  - script: npm install
+    displayName: 'Install Dependencies'
+
+  # Executes Jest tests and generates a coverage report.
+  - script: npm run test -- --coverage
+    displayName: 'Run Jest Tests with Coverage Report'
+
+  # Publishes test results in a format Azure DevOps can understand.
+  - task: PublishTestResults@2
+    inputs:
+      testResultsFiles: '**/jest-test-results.xml'  # Path to the Jest test results file.
+      testRunTitle: 'Jest Unit Tests'  # Title displayed in the test report.
+      testRunSystem: 'Jest'  # Specify the system that generated the results.
+
+  # Publishes the code coverage report in Cobertura format.
+  - task: PublishCodeCoverageResults@1
+    inputs:
+      codeCoverageTool: 'Cobertura'  # Use Cobertura format for coverage.
+      summaryFileLocation: '$(System.DefaultWorkingDirectory)/coverage/cobertura-coverage.xml'  # Path to the Cobertura report.
+      reportDirectory: '$(System.DefaultWorkingDirectory)/coverage'  # Directory where Jest saves coverage reports.
+      failIfCoverageEmpty: true  # Fail the pipeline if no coverage report is generated.
+
+  # Copies the generated coverage files to a staging directory, making them accessible as artifacts.
+  - task: CopyFiles@2
+    inputs:
+      SourceFolder: '$(System.DefaultWorkingDirectory)/coverage'  # Folder where Jest saves coverage files.
+      Contents: '**/*'  # All files in the coverage folder.
+      TargetFolder: '$(Build.ArtifactStagingDirectory)/coverage'  # Staging directory for build artifacts.
+
+  # Publishes the coverage report as a downloadable artifact in Azure DevOps.
+  - task: PublishBuildArtifacts@1
+    inputs:
+      pathToPublish: '$(Build.ArtifactStagingDirectory)/coverage'  # Path to coverage report files.
+      artifactName: 'CoverageReport'  # Name for the artifact.
+      publishLocation: 'Container'  # Store the artifact in Azure DevOps's default storage.
