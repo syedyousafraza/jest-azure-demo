@@ -1,0 +1,12 @@
+{
+  "name": "jest-demo",
+  "version": "1.0.0",
+  "description": "Jest testing unit tests",
+  "scripts": {
+    "test": "jest",
+    "test:coverage": "jest --coverage"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+}

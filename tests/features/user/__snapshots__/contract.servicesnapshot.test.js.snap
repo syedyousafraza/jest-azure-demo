@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test suite for config testing using snapshot this test covers feature of snapshot testing 1`] = `
+{
+  "db": {
+    "database": "node_db",
+    "host": "localhost",
+    "password": "123",
+    "user": "root",
+  },
+  "host": "localhost",
+  "port": 3000,
+}
+`;
