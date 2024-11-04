@@ -1,0 +1,78 @@
+trigger:
+  branches:
+    include:
+      - master
+  paths:
+    include:
+      - '**/*'
+
+pr:
+  branches:
+    include:
+      - master
+
+pool:
+  name: 'local-windows'
+  demands:
+    - agent.name -equals thinkpad-agent
+
+variables:
+  npm_config_cache: $(Pipeline.Workspace)/.npm  # Define npm cache directory
+
+steps:
+  # Restore cached npm packages
+  - task: Cache@2
+    inputs:
+      key: 'npm | "$(Agent.OS)" | package-lock.json'
+      restoreKeys: |
+        npm | "$(Agent.OS)"
+      path: $(npm_config_cache)
+    displayName: 'Cache npm packages'
+
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '16.x'
+
+  # Modified npm install to use cache
+  - script: |
+      npm ci --cache $(npm_config_cache)
+    displayName: 'Install Dependencies'
+
+  # Cache Jest test results for faster subsequent runs
+  - task: Cache@2
+    inputs:
+      key: 'jest-cache | "$(Agent.OS)" | package-lock.json'
+      restoreKeys: |
+        jest-cache | "$(Agent.OS)"
+      path: $(System.DefaultWorkingDirectory)/.jest-cache
+    displayName: 'Cache Jest results'
+
+  # Modified Jest command to use cache
+  - script: |
+      npm run test -- --coverage --cacheDirectory="$(System.DefaultWorkingDirectory)/.jest-cache"
+    displayName: 'Run Jest Tests with Coverage Report'
+
+  - task: PublishTestResults@2
+    inputs:
+      testResultsFiles: '**/jest-test-results.xml'
+      testRunTitle: 'Jest Unit Tests'
+      testRunSystem: 'Jest'
+
+  - task: PublishCodeCoverageResults@1
+    inputs:
+      codeCoverageTool: 'Cobertura'
+      summaryFileLocation: '$(System.DefaultWorkingDirectory)/coverage/cobertura-coverage.xml'
+      reportDirectory: '$(System.DefaultWorkingDirectory)/coverage'
+      failIfCoverageEmpty: true
+
+  - task: CopyFiles@2
+    inputs:
+      SourceFolder: '$(System.DefaultWorkingDirectory)/coverage'
+      Contents: '**/*'
+      TargetFolder: '$(Build.ArtifactStagingDirectory)/coverage'
+
+  - task: PublishBuildArtifacts@1
+    inputs:
+      pathToPublish: '$(Build.ArtifactStagingDirectory)/coverage'
+      artifactName: 'CoverageReport'
+      publishLocation: 'Container'
