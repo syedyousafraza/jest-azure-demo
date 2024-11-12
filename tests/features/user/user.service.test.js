@@ -55,7 +55,7 @@ describe('UserService', () => {
   describe('Username Formating', () => {
     // Test cases for formatting user names
     const testCases = [
-      ['John', 'Doe', 'John Doe'],             // Standard firstName lastName
+      ['John', 'Doe', 'John Doe'],             // Standard firstName and lastName
       ['  John  ', '  Doe  ', 'John Doe'],     // Leading and trailing spaces
       ['John', '', 'John'],                     // Missing last name
       ['', 'Doe', 'Doe'],                       // Missing first name
