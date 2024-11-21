@@ -43,7 +43,7 @@ const UserService = {
    * Formats the given first and last names into a full name string.
    * @param {string} firstName - The first name to format.
    * @param {string} lastName - The last name to format.
-   * @returns {string} The formatted full name string.
+   * @returns {string} The formatted full name string..
    */
   formatUserName(firstName, lastName) {
     return `${firstName.trim()} ${lastName.trim()}`.trim();
