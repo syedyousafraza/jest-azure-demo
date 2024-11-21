@@ -23,6 +23,10 @@ const UserService = {
     };
   },
 
+  add(a, b) {
+    return a + b;
+  },
+
 
   /**
    * Validates whether the given email address is in a valid format.
@@ -44,6 +48,8 @@ const UserService = {
   formatUserName(firstName, lastName) {
     return `${firstName.trim()} ${lastName.trim()}`.trim();
   }
+
+  
 
 };
 
