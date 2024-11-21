@@ -22,10 +22,11 @@ const UserService = {
       createdAt: new Date().toISOString(),
     };
   },
-
-  // add(a, b) {
-  //   return a + b;
-  // },
+/*
+  add(a, b) {
+    return a + b;
+  },
+  */
 
 
   /**
