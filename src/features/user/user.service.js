@@ -29,7 +29,7 @@ const UserService = {
 
 
   /**
-   * Validates whether the given email address is in a valid format.
+   * Validates whether the given email address is in a valid format..
    * @param {string} email - The email address to validate.
    * @returns {boolean} Whether the email address is valid.
    */
