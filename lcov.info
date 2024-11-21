@@ -59,8 +59,8 @@ end_of_record
 TN:
 SF:src/features/user/user.service.js
 FN:9,(anonymous_0)
-FN:36,(anonymous_1)
-FN:48,(anonymous_2)
+FN:37,(anonymous_1)
+FN:49,(anonymous_2)
 FNF:3
 FNH:3
 FNDA:2,(anonymous_0)
@@ -71,10 +71,10 @@ DA:10,2
 DA:11,1
 DA:15,1
 DA:18,1
-DA:37,4
 DA:38,4
-DA:49,7
-DA:56,1
+DA:39,4
+DA:50,7
+DA:57,1
 LF:9
 LH:9
 BRDA:10,0,0,1
