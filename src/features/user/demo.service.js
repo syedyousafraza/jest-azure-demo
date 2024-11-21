@@ -3,7 +3,7 @@ class Welcome {
      * Returns a greeting message.
      * @returns {string} The greeting message.
      */
-    greetings() {
+    greetingsForUsers() {
       return "Hello World";
     }
   }
