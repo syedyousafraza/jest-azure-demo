@@ -23,7 +23,7 @@ jobs:
         run: npm install
 
       - name: Run Tests
-        run: npm test -- --coverage
+        run: npm test --coverage
 
       - name: List Coverage Directory
         run: ls -R coverage  # Check if coverage is generated.
