@@ -1,26 +1,26 @@
-# name: Run Tests
+name: Run Tests
 
-# on:
-#   push:
-#     branches:
-#       - master
-#       - develop
+on:
+  push:
+    branches:
+      - master
+      - develop
 
-# jobs:
-#   test:
-#     runs-on: ubuntu-latest  # Use the latest Ubuntu runner
+jobs:
+  test:
+    runs-on: ubuntu-latest  # Use the latest Ubuntu runner
 
-#     steps:
-#       - name: Checkout code
-#         uses: actions/checkout@v2  # Check out the repository code
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2  # Check out the repository code
 
-#       - name: Set up Node.js
-#         uses: actions/setup-node@v2
-#         with:
-#           node-version: '16'  # Specify the Node.js version you want to use
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'  # Specify the Node.js version you want to use
 
-#       - name: Install Dependencies
-#         run: npm install  # Install dependencies defined in package.json
+      - name: Install Dependencies
+        run: npm install  # Install dependencies defined in package.json
 
-#       - name: Run Tests
-#         run: npm test -- --coverage  # Run your Jest tests with coverage report
+      - name: Run Tests
+        run: npm test -- --coverage  # Run your Jest tests with coverage report

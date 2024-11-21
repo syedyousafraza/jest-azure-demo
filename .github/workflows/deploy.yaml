@@ -1,39 +1,39 @@
-# name: Run Tests and Deploy
+name: Run Tests and Deploy
 
-# on:
-#   push:
-#     branches:
-#       - master
-#       - develop
+on:
+  push:
+    branches:
+      - master
+      - develop
 
-# jobs:
-#   test:
-#     runs-on: ubuntu-latest
+jobs:
+  test:
+    runs-on: ubuntu-latest
 
-#     steps:
-#       - name: Checkout code
-#         uses: actions/checkout@v2
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-#       - name: Set up Node.js
-#         uses: actions/setup-node@v2
-#         with:
-#           node-version: '16'
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
 
-#       - name: Install Dependencies
-#         run: npm install
+      - name: Install Dependencies
+        run: npm install
 
-#       - name: Run Tests
-#         run: npm test -- --coverage
+      - name: Run Tests
+        run: npm test -- --coverage
 
-#       - name: List Coverage Directory
-#         run: ls -R coverage  # Check if coverage is generated
+      - name: List Coverage Directory
+        run: ls -R coverage  # Check if coverage is generated
 
-#       - name: Deploy to GitHub Pages for coverage
-#         if: success()
-#         uses: peaceiris/actions-gh-pages@v3
-#         with:
-#           github_token: ${{ secrets.GH_PAT }}  # Use the default token
-#           publish_dir: coverage
-#           user_name: 'Yousaf Raza' 
-#           user_email: 'your-email@example.com'  # Replace with email
-#           commit_message: 'Deploy coverage report' 
+      - name: Deploy to GitHub Pages for coverage
+        if: success()
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GH_PAT }}  # Use the default token
+          publish_dir: coverage
+          user_name: 'Yousaf Raza' 
+          user_email: 'your-email@example.com'  # Replace with email
+          commit_message: 'Deploy coverage report' 
