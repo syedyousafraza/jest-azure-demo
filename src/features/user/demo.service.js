@@ -1,11 +1,6 @@
-class Welcome {
-    /**
-     * Returns a greeting message.
-     * @returns {string} The greeting message.
-     */
-    greetingsForUsers() {
-      return "Hello World";
+class Sum {
+    sum(a, b) {
+        return a + b;
     }
-  }
-  
-  module.exports = Welcome;
+}; 
+
