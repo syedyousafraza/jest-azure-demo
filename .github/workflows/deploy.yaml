@@ -33,7 +33,7 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GH_PAT }}  # Use the default token
-          publish_dir: ./deploy
+          publish_dir: ./coverage
           publish_branch: gh-pages  # Explicitly specify branch
           user_name: 'Yousaf Raza' 
           user_email: 'your-email@example.com'  # Replace with email
