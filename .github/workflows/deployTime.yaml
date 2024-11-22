@@ -1,0 +1,64 @@
+# Workflow name that appears in GitHub Actions UI
+name: Run Tests and Deploy
+
+# Defines when this workflow will be triggered
+on:
+  push:
+    # Specifies which branches will trigger this workflow when code is pushed
+    branches:
+      - master
+      - develop
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+
+      # Step to get current timestamp
+      - name: Get timestamp
+        id: timestamp
+        run: echo "timestamp=$(date +'%Y-%m-%d_%H-%M-%S')" >> $GITHUB_OUTPUT
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Run Tests
+        run: npm test -- --coverage
+
+      - name: List Coverage Directory
+        run: ls -R coverage
+
+      - name: Deploy to GitHub Pages for coverage
+        if: success()
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GH_PAT }}
+          # Create a timestamped directory for each deployment
+          publish_dir: ./coverage
+          destination_dir: reports/${{ steps.timestamp.outputs.timestamp }}
+          publish_branch: gh-pages
+          user_name: 'Yousaf Raza'
+          user_email: 'your-email@example.com'
+          # Include timestamp in commit message
+          commit_message: 'Deploy coverage report for ${{ steps.timestamp.outputs.timestamp }}'
+          
+      # Create or update the latest symlink
+      - name: Update latest report symlink
+        if: success()
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GH_PAT }}
+          publish_dir: ./coverage
+          destination_dir: latest
+          publish_branch: gh-pages
+          user_name: 'Yousaf Raza'
+          user_email: 'your-email@example.com'
+          commit_message: 'Update latest coverage report symlink'
