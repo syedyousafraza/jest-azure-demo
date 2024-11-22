@@ -1,8 +1,8 @@
-class Sum {
-    sum(a, b) {
-        return a + b;
-    }
-}
+// class Sum {
+//     sum(a, b) {
+//         return a + b;
+//     }
+// }
 
-module.exports = Sum;
+// module.exports = Sum;
 
