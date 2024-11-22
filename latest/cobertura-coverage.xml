@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <!DOCTYPE coverage SYSTEM "http://cobertura.sourceforge.net/xml/coverage-04.dtd">
-<coverage lines-valid="31" lines-covered="28" line-rate="0.9031999999999999" branches-valid="9" branches-covered="9" branch-rate="1" timestamp="1732262597009" complexity="0" version="0.1">
+<coverage lines-valid="29" lines-covered="27" line-rate="0.9309999999999999" branches-valid="9" branches-covered="9" branch-rate="1" timestamp="1732287694725" complexity="0" version="0.1">
   <sources>
     <source>/home/runner/work/jest-azure-demo/jest-azure-demo</source>
   </sources>
@@ -63,7 +63,7 @@
         </class>
       </classes>
     </package>
-    <package name="src.features.user" line-rate="0.9333" branch-rate="1">
+    <package name="src.features.user" line-rate="1" branch-rate="1">
       <classes>
         <class name="contract.service.js" filename="src/features/user/contract.service.js" line-rate="1" branch-rate="1">
           <methods>
@@ -73,17 +73,10 @@
             <line number="14" hits="2" branch="false"/>
           </lines>
         </class>
-        <class name="demo.service.js" filename="src/features/user/demo.service.js" line-rate="0.5" branch-rate="1">
+        <class name="demo.service.js" filename="src/features/user/demo.service.js" line-rate="0" branch-rate="0">
           <methods>
-            <method name="(anonymous_0)" hits="0" signature="()V">
-              <lines>
-                <line number="2" hits="0"/>
-              </lines>
-            </method>
           </methods>
           <lines>
-            <line number="3" hits="0" branch="false"/>
-            <line number="7" hits="1" branch="false"/>
           </lines>
         </class>
         <class name="user.service.js" filename="src/features/user/user.service.js" line-rate="1" branch-rate="1">
