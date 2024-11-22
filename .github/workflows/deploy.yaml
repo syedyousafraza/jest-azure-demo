@@ -1,40 +1,62 @@
+# Workflow name that appears in GitHub Actions UI
 name: Run Tests and Deploy
 
+# Defines when this workflow will be triggered
 on:
   push:
+    # Specifies which branches will trigger this workflow when code is pushed
     branches:
       - master
       - develop
 
+# Groups of jobs to be executed
 jobs:
+  # Job named 'test' for running tests and deployment
   test:
+    # Specifies the type of runner to execute the job
     runs-on: ubuntu-latest
 
+    # Sequential steps to be executed
     steps:
+      # Step 1: Checks out the repository code to the runner
       - name: Checkout code
         uses: actions/checkout@v2
 
+      # Step 2: Sets up Node.js environment
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
+          # Specifies the version of Node.js to use
           node-version: '16'
 
+      # Step 3: Installs project dependencies using npm
       - name: Install Dependencies
         run: npm install
 
+      # Step 4: Runs test suite and generates coverage report
       - name: Run Tests
         run: npm test -- --coverage
 
+      # Step 5: Debug step to verify coverage directory contents
       - name: List Coverage Directory
         run: ls -R coverage  # Check if coverage is generated.
 
+      # Step 6: Deploys coverage report to GitHub Pages
       - name: Deploy to GitHub Pages for coverage
+        # Only runs this step if previous steps were successful
         if: success()
+        # Uses peaceiris action for GitHub Pages deployment
         uses: peaceiris/actions-gh-pages@v3
         with:
+          # Authentication token for GitHub
           github_token: ${{ secrets.GH_PAT }}  # Use the default token
+          # Directory containing files to publish
           publish_dir: ./coverage
+          # Branch where the coverage report will be published
           publish_branch: gh-pages  # Explicitly specify branch
+          # Git author name for commit
           user_name: 'Yousaf Raza' 
+          # Git author email for commit
           user_email: 'your-email@example.com'  # Replace with email
-          commit_message: 'Deploy coverage report'  
+          # Commit message for deployment
+          commit_message: 'Deploy coverage report'
