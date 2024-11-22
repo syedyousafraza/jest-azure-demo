@@ -6,6 +6,9 @@ module.exports = {
     "**/*.test.js",
     "**/*.spec.js"
   ],
+  collectCoverageFrom: [
+    'src/feature/**/*.js',   // Include all files in the src directory
+  ],
   passWithNoTests: true,
   collectCoverage: true,
   coverageDirectory: "coverage",
